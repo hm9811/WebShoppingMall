@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration --no-restore
+      run: dotnet build --configuration Release --no-restore
    # Will unccoment later when unit tests have been created
    # - name: Test
    #   run: dotnet test --no-build --verbosity normal
