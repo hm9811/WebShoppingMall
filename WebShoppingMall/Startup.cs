@@ -73,6 +73,8 @@ namespace WebShoppingMall
                                     .GetRequiredService<IServiceProvider>()
                                     .CreateScope();
             IdentityHelper.CreateRoles(serviceProvider.ServiceProvider, IdentityHelper.Admin, IdentityHelper.User).Wait();
+
+            IdentityHelper.CreateDefaultAdmin(serviceProvider.ServiceProvider).Wait();
         }
     }
 }
