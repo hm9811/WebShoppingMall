@@ -13,12 +13,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using WebShoppingMall.Models;
 
 namespace WebShoppingMall.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
+        private const string UserEmail = "@shoppinghere.com";
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
@@ -81,6 +83,15 @@ namespace WebShoppingMall.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    if (user.Email.ToLower().EndsWith(UserEmail))
+                    {
+                        var roleResult = await _userManager.AddToRoleAsync(user, IdentityHelper.User);
+                        if (!roleResult.Succeeded)
+                        {
+                            _logger.LogInformation($"{user.UserName} didn't added to User role");
+                        }
+                    }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
