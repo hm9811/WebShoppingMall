@@ -45,5 +45,30 @@ namespace WebShoppingMall.Models
                 }
             }
         }
+
+        public static async Task CreateDefaultAdmin(IServiceProvider serviceProvider)
+        {
+            const string email = "webshopping@shoppinghere.com";
+            const string username = "Admin";
+            const string password = "WebShopping";
+
+            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            
+            //Check if any users are in database
+            if(userManager.Users.Count() == 0)
+            {
+                IdentityUser admin = new IdentityUser()
+                {
+                    Email = email,
+                    UserName = username,
+                };
+
+                //Create Admin
+                await userManager.CreateAsync(admin, password);
+
+                // Add to Admin role
+                await userManager.AddToRoleAsync(admin, Admin);
+            }
+        }
     }
 }
