@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20210421190908_MyMigration.cs" />
+    <Compile Remove="Data\Migrations\20210421190908_MyMigration.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210421192245_changetablename.cs" />
+    <Compile Remove="Data\Migrations\20210421192245_changetablename.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.12" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.13" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.13" />

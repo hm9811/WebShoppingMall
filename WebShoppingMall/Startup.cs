@@ -18,6 +18,7 @@ namespace WebShoppingMall
 {
     public class Startup
     {
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -36,6 +37,11 @@ namespace WebShoppingMall
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("ApplicationDbContextConnection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,5 +82,7 @@ namespace WebShoppingMall
 
             IdentityHelper.CreateDefaultAdmin(serviceProvider.ServiceProvider).Wait();
         }
+
+
     }
 }
