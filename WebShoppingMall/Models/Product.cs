@@ -14,6 +14,9 @@ namespace WebShoppingMall.Models
         public string Title { get; set; }
 
         public string Descriptions { get; set; }
+
+        [DataType(DataType.Currency)]
+        public double Price { get; set; }
     }
 
     public class PhotoProduct : Product
