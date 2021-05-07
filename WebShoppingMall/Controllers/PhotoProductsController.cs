@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,6 @@ using WebShoppingMall.Models;
 
 namespace WebShoppingMall.Controllers
 {
-    [Authorize(Roles = IdentityHelper.Admin)]
     public class PhotoProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -56,7 +54,7 @@ namespace WebShoppingMall.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PhotoId,ProductId,Title,Descriptions,Price")] PhotoProduct photoProduct)
+        public async Task<IActionResult> Create([Bind("ProductId,Title")] PhotoProduct photoProduct)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +86,7 @@ namespace WebShoppingMall.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PhotoId,ProductId,Title,Descriptions,Price")] PhotoProduct photoProduct)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Title")] PhotoProduct photoProduct)
         {
             if (id != photoProduct.ProductId)
             {
