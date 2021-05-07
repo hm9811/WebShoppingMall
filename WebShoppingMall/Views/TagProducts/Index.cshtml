@@ -1,0 +1,50 @@
+﻿@model IEnumerable<WebShoppingMall.Models.TagProduct>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br /><br />
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-info">Product Tag</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-action="Create" class="btn btn-info"><i class="fas fa-plus"></i> &nbsp; Add New Tag</a>
+    </div>
+</div>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td style="width: 150px">
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@item.TagId" class="btn btn-primary">
+                            <i class="far fa-edit"></i>
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.TagId" class="btn btn-success">
+                            <i class="fas fa-list-ul"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.TagId" class="btn btn-danger">
+                            <i class="far fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
