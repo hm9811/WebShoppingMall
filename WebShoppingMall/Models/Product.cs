@@ -6,21 +6,14 @@ using System.Threading.Tasks;
 
 namespace WebShoppingMall.Models
 {
-    public class Product
+    public class PhotoProduct
     {
         [Key]
         public int ProductId { get; set; }
 
+        [Display(Name = "Product Type")]
         public string Title { get; set; }
 
-        public string Descriptions { get; set; }
-
-        [DataType(DataType.Currency)]
-        public double Price { get; set; }
     }
 
-    public class PhotoProduct : Product
-    {
-        public string PhotoId { get; set; }
-    }
 }
