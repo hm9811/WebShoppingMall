@@ -26,6 +26,8 @@ namespace WebShoppingMall.Data
 
         public DbSet<PhotoProduct> PhotoProducts { get; set; }
 
-        public DbSet<WebShoppingMall.Models.TagProduct> TagProduct { get; set; }
+        public DbSet<TagProduct> TagProduct { get; set; }
+
+        public DbSet<ProductList> Products { get; set; }
     }
 }
