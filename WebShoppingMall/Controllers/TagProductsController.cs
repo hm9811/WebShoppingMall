@@ -62,6 +62,7 @@ namespace WebShoppingMall.Controllers
             {
                 _context.Add(tagProduct);
                 await _context.SaveChangesAsync();
+                TempData["save"] = "Product type has been saved";
                 return RedirectToAction(nameof(Index));
             }
             return View(tagProduct);
@@ -101,6 +102,7 @@ namespace WebShoppingMall.Controllers
                 {
                     _context.Update(tagProduct);
                     await _context.SaveChangesAsync();
+                    TempData["edit"] = "Product type has been updated";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -144,6 +146,7 @@ namespace WebShoppingMall.Controllers
             var tagProduct = await _context.TagProduct.FindAsync(id);
             _context.TagProduct.Remove(tagProduct);
             await _context.SaveChangesAsync();
+            TempData["delete"] = "Product type has been deleted";
             return RedirectToAction(nameof(Index));
         }
 
