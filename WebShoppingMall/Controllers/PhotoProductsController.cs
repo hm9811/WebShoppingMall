@@ -60,6 +60,7 @@ namespace WebShoppingMall.Controllers
             {
                 _context.Add(photoProduct);
                 await _context.SaveChangesAsync();
+                TempData["save"] = "Product type has been saved";
                 return RedirectToAction(nameof(Index));
             }
             return View(photoProduct);
@@ -99,6 +100,7 @@ namespace WebShoppingMall.Controllers
                 {
                     _context.Update(photoProduct);
                     await _context.SaveChangesAsync();
+                    TempData["edit"] = "Product type has been updated";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -142,6 +144,7 @@ namespace WebShoppingMall.Controllers
             var photoProduct = await _context.PhotoProducts.FindAsync(id);
             _context.PhotoProducts.Remove(photoProduct);
             await _context.SaveChangesAsync();
+            TempData["delete"] = "Product type has been deleted";
             return RedirectToAction(nameof(Index));
         }
 
