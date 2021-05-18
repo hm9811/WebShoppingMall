@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using WebShoppingMall.Data;
 using WebShoppingMall.Models;
 
@@ -16,9 +16,9 @@ namespace WebShoppingMall.Controllers
     public class ProductListsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private IHostingEnvironment _he;
+        private IHostEnvironment _he;
 
-        public ProductListsController(ApplicationDbContext context, IHostingEnvironment he)
+        public ProductListsController(ApplicationDbContext context, IHostEnvironment he)
         {
             _context = context;
             _he = he;
@@ -70,7 +70,7 @@ namespace WebShoppingMall.Controllers
             {
                 if(image != null)
                 {
-                    var name = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
+                    var name = Path.Combine(_he.ContentRootPath + "/Images", Path.GetFileName(image.FileName));
                     await image.CopyToAsync(new FileStream(name, FileMode.Create));
                     productList.Image ="Images/" + image.FileName;
                 }
