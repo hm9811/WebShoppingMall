@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +16,12 @@ namespace WebShoppingMall.Controllers
     public class ProductListsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IHostingEnvironment _he;
 
-        public ProductListsController(ApplicationDbContext context)
+        public ProductListsController(ApplicationDbContext context, IHostingEnvironment he)
         {
             _context = context;
+            _he = he;
         }
 
         // GET: ProductLists
@@ -59,10 +64,16 @@ namespace WebShoppingMall.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Price,Image,Color,IsAvailable,ProductId,TagId")] ProductList productList)
+        public async Task<IActionResult> Create([Bind("Id,Title,Price,Image,Color,IsAvailable,ProductId,TagId")] ProductList productList, IFormFile image)
         {
             if (ModelState.IsValid)
             {
+                if(image != null)
+                {
+                    var name = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
+                    await image.CopyToAsync(new FileStream(name, FileMode.Create));
+                    productList.Image ="Images/" + image.FileName;
+                }
                 _context.Add(productList);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
