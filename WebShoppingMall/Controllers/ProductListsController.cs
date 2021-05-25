@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using WebShoppingMall.Data;
 using WebShoppingMall.Models;
 
@@ -16,9 +16,9 @@ namespace WebShoppingMall.Controllers
     public class ProductListsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private IHostEnvironment _he;
+        private IWebHostEnvironment _he;
 
-        public ProductListsController(ApplicationDbContext context, IHostEnvironment he)
+        public ProductListsController(ApplicationDbContext context, IWebHostEnvironment he)
         {
             _context = context;
             _he = he;
@@ -70,9 +70,13 @@ namespace WebShoppingMall.Controllers
             {
                 if(image != null)
                 {
-                    var name = Path.Combine(_he.ContentRootPath + "/Images", Path.GetFileName(image.FileName));
+                    var name = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
                     await image.CopyToAsync(new FileStream(name, FileMode.Create));
                     productList.Image ="Images/" + image.FileName;
+                }
+                if (image == null)
+                {
+                    productList.Image = "/Images/noimage.PNG";
                 }
                 _context.Add(productList);
                 await _context.SaveChangesAsync();
@@ -106,7 +110,7 @@ namespace WebShoppingMall.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Price,Image,Color,IsAvailable,ProductId,TagId")] ProductList productList)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Price,Image,Color,IsAvailable,ProductId,TagId")] ProductList productList, IFormFile image)
         {
             if (id != productList.Id)
             {
@@ -117,6 +121,17 @@ namespace WebShoppingMall.Controllers
             {
                 try
                 {
+                    if (image != null)
+                    {
+                        var name = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
+                        await image.CopyToAsync(new FileStream(name, FileMode.Create));
+                        productList.Image = "Images/" + image.FileName;
+                    }
+                    if (image == null)
+                    {
+                        productList.Image = "Images/noimage.PNG";
+                    }
+
                     _context.Update(productList);
                     await _context.SaveChangesAsync();
                 }
