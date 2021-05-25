@@ -68,7 +68,17 @@ namespace WebShoppingMall.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(image != null)
+
+                var uniqueProduct = _context.Products.FirstOrDefault(c => c.Title == productList.Title);
+                if (uniqueProduct != null)
+                {
+                    ViewBag.message = "This product is already exist";
+                    ViewData["TagId"] = new SelectList(_context.TagProduct, "TagId", "Name", productList.TagId);
+                    ViewData["ProductId"] = new SelectList(_context.PhotoProducts, "ProductId", "Title", productList.ProductId);
+                    return View(productList);
+                }
+
+                if (image != null)
                 {
                     var name = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
                     await image.CopyToAsync(new FileStream(name, FileMode.Create));
@@ -82,8 +92,7 @@ namespace WebShoppingMall.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TagId"] = new SelectList(_context.TagProduct, "TagId", "Name", productList.TagId);
-            ViewData["ProductId"] = new SelectList(_context.PhotoProducts, "ProductId", "Title", productList.ProductId);
+
             return View(productList);
         }
 
