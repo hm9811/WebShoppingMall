@@ -1,0 +1,94 @@
+﻿@model WebShoppingMall.Models.ProductList
+@{
+    ViewData["Title"] = "Details";
+}
+
+<br />
+
+<h2 class="text-info">Product Details</h2>
+<form asp-action="Detail" method="post" enctype="multipart/form-data">
+    <div class="p-4 rounded border row">
+        <div asp-validation-summary="ModelOnly" class="text-danger">
+
+        </div>
+        <div class="col-8">
+            <div class="form-group row">
+                <div class="col-4">
+                    <b>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </b>
+                </div>
+                <div class="col-8">
+                    <input type="hidden" asp-for="Id" />
+                    @Html.DisplayFor(model => model.Title)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <b>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </b>
+                </div>
+                <div class="col-8">
+                    @Html.DisplayFor(model => model.Price)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <b>
+                        @Html.DisplayNameFor(model => model.Color)
+                    </b>
+                </div>
+                <div class="col-8">
+                    @Html.DisplayFor(model => model.Color)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <b>
+                        @Html.DisplayNameFor(model => model.ProductId)
+                    </b>
+                </div>
+                <div class="col-8">
+                    @Html.DisplayFor(model => model.ProductTypes.Title)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+
+                </div>
+                <div class="col-8">
+
+                        <button type="submit" class="btn btn-danger form-control" asp-action="Remove" asp-route-id="@Model.Id">Remove to Cart</button>
+
+                        <input type="submit" class="btn btn-info form-control" value="Add to Cart" />
+
+
+                </div>
+
+            </div>
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-success">Back to List</a>
+            </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-3">
+            <img src="~/@Model.Image" height="250" style="border-radius: 5px;border: 1px solid #efefef" />
+            @if (Model.IsAvailable)
+            {
+                <img src="~/Images/instock-logo.jpg" />
+            }
+            else
+            {
+                <img src="~/Images/notinstock.jpg"/>
+            }
+
+        </div>
+
+    </div>
+</form>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
