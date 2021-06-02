@@ -31,6 +31,18 @@ namespace WebShoppingMall.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        [HttpPost]
+        public IActionResult Index(decimal? lowAmount, decimal? largeAmount)
+        {
+            var products = _context.Products.Include(c => c.ProductTypes).Include(c => c.ProductTag)
+                .Where(c => c.Price >= lowAmount && c.Price <= largeAmount).ToList();
+            if (lowAmount == null || largeAmount == null)
+            {
+                products = _context.Products.Include(c => c.ProductTypes).Include(c => c.ProductTag).ToList();
+            }
+            return View(products);
+        }
+
         // GET: ProductLists/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -86,7 +98,7 @@ namespace WebShoppingMall.Controllers
                 }
                 if (image == null)
                 {
-                    productList.Image = "/Images/noimage.PNG";
+                    productList.Image = "Images/noimage.PNG";
                 }
                 _context.Add(productList);
                 await _context.SaveChangesAsync();

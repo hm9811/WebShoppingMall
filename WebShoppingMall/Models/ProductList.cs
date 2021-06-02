@@ -17,7 +17,7 @@ namespace WebShoppingMall.Models
         public string Title { get; set; }
 
         [Required]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         public string Image { get; set; }
 
