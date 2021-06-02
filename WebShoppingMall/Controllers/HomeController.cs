@@ -93,5 +93,38 @@ namespace WebShoppingMall.Controllers
             }
             return View(products);
         }
+
+        public IActionResult Remove(int? id)
+        {
+            List<ProductList> products = HttpContext.Session.Get<List<ProductList>>("products");
+            if (products != null)
+            {
+                var product = products.FirstOrDefault(c => c.Id == id);
+                if (product != null)
+                {
+                    products.Remove(product);
+                    HttpContext.Session.Set("products", products);
+                }
+            }
+            return RedirectToAction(nameof(Cart));
+        }
+
+        [HttpPost]
+        [ActionName("Remove")]
+
+        public IActionResult RemoveConfirm(int? id)
+        {
+            List<ProductList> products = HttpContext.Session.Get<List<ProductList>>("products");
+            if (products != null)
+            {
+                var product = products.FirstOrDefault(c => c.Id == id);
+                if (product != null)
+                {
+                    products.Remove(product);
+                    HttpContext.Session.Set("products", products);
+                }
+            }
+            return RedirectToAction(nameof(Cart));
+        }
     }
 }
