@@ -31,16 +31,17 @@ namespace WebShoppingMall.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+
         [HttpPost]
-        public IActionResult Index(decimal? lowAmount, decimal? largeAmount)
+        public async Task<IActionResult> Index(decimal? lowAmount, decimal? largeAmount)
         {
-            var products = _context.Products.Include(c => c.ProductTypes).Include(c => c.ProductTag)
-                .Where(c => c.Price >= lowAmount && c.Price <= largeAmount).ToList();
+            var productList = await _context.Products.Include(p => p.ProductTypes).Include(p => p.ProductTag)
+                .Where(p => p.Price >= lowAmount && p.Price <= largeAmount).ToListAsync();
             if (lowAmount == null || largeAmount == null)
             {
-                products = _context.Products.Include(c => c.ProductTypes).Include(c => c.ProductTag).ToList();
+                productList = await _context.Products.Include(p => p.ProductTypes).Include(p => p.ProductTag).ToListAsync();
             }
-            return View(products);
+            return View(productList);
         }
 
         // GET: ProductLists/Details/5
