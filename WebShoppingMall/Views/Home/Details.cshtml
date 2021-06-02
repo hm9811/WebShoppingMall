@@ -2,7 +2,19 @@
 @{
     ViewData["Title"] = "Details";
 }
+@using WebShoppingMall.Utility
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
 
+    List<ProductList> products = HttpContextAccessor.HttpContext.Session.Get<List<ProductList>>("products");
+    ProductList product = null;
+    if (products != null)
+    {
+        product = products.FirstOrDefault(c => c.Id == Model.Id);
+    }
+
+}
 <br />
 
 <h2 class="text-info">Product Details</h2>
@@ -59,11 +71,14 @@
 
                 </div>
                 <div class="col-8">
-
+                    @if (product != null)
+                    {
                         <button type="submit" class="btn btn-danger form-control" asp-action="Remove" asp-route-id="@Model.Id">Remove to Cart</button>
-
+                    }
+                    else
+                    {
                         <input type="submit" class="btn btn-info form-control" value="Add to Cart" />
-
+                    }
 
                 </div>
 
@@ -81,7 +96,7 @@
             }
             else
             {
-                <img src="~/Images/notinstock.jpg"/>
+                <img src="~/Images/notinstock.jpg" />
             }
 
         </div>

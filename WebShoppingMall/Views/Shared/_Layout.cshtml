@@ -1,4 +1,18 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using WebShoppingMall.Utility
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString("roleName");
+    int count = 0;
+    List<ProductList> products = HttpContextAccessor.HttpContext.Session.Get<List<ProductList>>("products");
+    if (products == null)
+    {
+        products = new List<ProductList>();
+    }
+    count = products.Count();
+
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,9 +40,6 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="PhotoProducts" asp-action="Index">Product Type</a>
                         </li>
                         <li class="nav-item">
@@ -36,6 +47,19 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ProductLists" asp-action="Index">Product List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Cart">
+                                @if (count == 0)
+                                {
+                                    <i class="fas fa-shopping-cart"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-shopping-cart"></i>
+                                    @count
+                                }
+                            </a>
                         </li>
                     </ul>
                 </div>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebShoppingMall.Data;
 using WebShoppingMall.Models;
+using WebShoppingMall.Utility;
 
 namespace WebShoppingMall.Controllers
 {
@@ -28,6 +30,17 @@ namespace WebShoppingMall.Controllers
             return View(_context.Products.Include(p => p.ProductTypes).Include(p => p.ProductTag).ToList());
         }
 
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,15 +58,40 @@ namespace WebShoppingMall.Controllers
             return View(productList);
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        [ActionName("Detail")]
+        public ActionResult ProductDetail(int? id)
         {
-            return View();
+            List<ProductList> products = new List<ProductList>();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = _context.Products.Include(c => c.ProductTypes).FirstOrDefault(c => c.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            products = HttpContext.Session.Get<List<ProductList>>("products");
+            if (products == null)
+            {
+                products = new List<ProductList>();
+            }
+            products.Add(product);
+            HttpContext.Session.Set("products", products);
+            return RedirectToAction(nameof(Index));
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Cart()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            List<ProductList> products = HttpContext.Session.Get<List<ProductList>>("products");
+            if (products == null)
+            {
+                products = new List<ProductList>();
+            }
+            return View(products);
         }
     }
 }
