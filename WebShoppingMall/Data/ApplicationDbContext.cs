@@ -29,5 +29,7 @@ namespace WebShoppingMall.Data
         public DbSet<TagProduct> TagProduct { get; set; }
 
         public DbSet<ProductList> Products { get; set; }
+
+        public DbSet<Order> Order { get; set; }
     }
 }
