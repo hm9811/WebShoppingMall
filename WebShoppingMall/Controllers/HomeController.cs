@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using WebShoppingMall.Data;
 using WebShoppingMall.Models;
 using WebShoppingMall.Utility;
+using X.PagedList;
 
 namespace WebShoppingMall.Controllers
 {
@@ -25,9 +26,9 @@ namespace WebShoppingMall.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
-            return View(_context.Products.Include(p => p.ProductTypes).Include(p => p.ProductTag).ToList());
+            return View(_context.Products.Include(p => p.ProductTypes).Include(p => p.ProductTag).ToList().ToPagedList(page ?? 1, 6));
         }
 
         public IActionResult Privacy()
