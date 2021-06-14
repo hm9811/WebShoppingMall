@@ -2,7 +2,7 @@
 @using WebShoppingMall.Utility
 @inject IHttpContextAccessor HttpContextAccessor
 @{
-    var userRole = HttpContextAccessor.HttpContext.Session.GetString("roleName");
+    var userRole = HttpContextAccessor.HttpContext.User.Identity.Name;
     int count = 0;
     List<ProductList> products = HttpContextAccessor.HttpContext.Session.Get<List<ProductList>>("products");
     if (products == null)
@@ -37,18 +37,19 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PhotoProducts" asp-action="Index">Product Type</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="TagProducts" asp-action="Index">Product Tag</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ProductLists" asp-action="Index">Product List</a>
-                        </li>
+                        @if (userRole == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="PhotoProducts" asp-action="Index">Product Type</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="TagProducts" asp-action="Index">Product Tag</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ProductLists" asp-action="Index">Product List</a>
+                            </li>
+                        }
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Cart">
                                 @if (count == 0)

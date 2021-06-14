@@ -10,9 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using WebShoppingMall.Data;
 using WebShoppingMall.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebShoppingMall.Controllers
 {
+    [Authorize(Roles = IdentityHelper.Admin)]
     public class ProductListsController : Controller
     {
         private readonly ApplicationDbContext _context;
