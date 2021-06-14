@@ -123,9 +123,9 @@ namespace WebShoppingMall.Controllers
             if (productList == null)
             {
                 return NotFound();
-            }
-            ViewData["TagId"] = new SelectList(_context.TagProduct, "TagId", "TagId", productList.TagId);
-            ViewData["ProductId"] = new SelectList(_context.PhotoProducts, "ProductId", "ProductId", productList.ProductId);
+            };
+            ViewData["TagId"] = new SelectList(_context.TagProduct, "TagId", "Name", productList.TagId);
+            ViewData["ProductId"] = new SelectList(_context.PhotoProducts, "ProductId", "Title", productList.ProductId);
             return View(productList);
         }
 
