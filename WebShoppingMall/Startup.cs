@@ -54,9 +54,6 @@ namespace WebShoppingMall
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(
-                        Configuration.GetConnectionString("ApplicationDbContextConnection")));
 
         }
 
